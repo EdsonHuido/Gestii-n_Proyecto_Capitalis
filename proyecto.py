@@ -245,10 +245,10 @@ class Proyecto(ABC):
         if not otras:
             if any(a.responsable is asignacion.consultor for a in self.__actividades):
                 raise DatoInvalidoError(
-                    "El consultor figura como responsable de actividades. Cambie ese responsable primero (opción 9).")
+                    "El consultor figura como responsable de actividades. Cambie ese responsable primero (menú 9, opción 6).")
             if any(e.responsable is asignacion.consultor for e in self.__entregables):
                 raise DatoInvalidoError(
-                    "El consultor figura como responsable de entregables. Cambie ese responsable primero (opción 9).")
+                    "El consultor figura como responsable de entregables. Cambie ese responsable primero (menú 9, opción 7).")
         self.__asignaciones.remove(asignacion)
         asignacion.consultor.asignaciones.remove(asignacion)
 

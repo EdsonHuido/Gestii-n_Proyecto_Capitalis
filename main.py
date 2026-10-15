@@ -526,7 +526,8 @@ def actualizar_informacion(sistema):
                 else:
                     print(f"Estado: {elemento.estado} | Obligatorio: {'Sí' if elemento.obligatorio else 'No'}")
                     print("ATENCIÓN: confirme que el cambio sea compatible con los compromisos del cliente.")
-                if not leer_si_no(f"¿Confirma eliminar esta {tipo}?"):
+                articulo = "este" if tipo == "entregable" else "esta"
+                if not leer_si_no(f"¿Confirma eliminar {articulo} {tipo}?"):
                     print("Operación cancelada. No se modificó ningún registro.")
                     continue
                 if opcion == 9:
@@ -536,10 +537,12 @@ def actualizar_informacion(sistema):
                     restante = sum(a.peso for a in proyecto.actividades)
                     print(f"Peso total de actividades restantes: {restante:.1f}%.")
                     if restante != 100:
-                        print("[ATENCIÓN] Actualice los pesos en la opción 9 antes del cierre.")
+                        print("[ATENCIÓN] Actualice los pesos en la opción 6 (Actividad) antes del cierre.")
                 else:
                     proyecto.eliminar_entregable(elemento)
-                print(f"[OK] {tipo.capitalize()} eliminada correctamente.")
+                mensajes = {"asignación": "Asignación eliminada", "actividad": "Actividad eliminada",
+                            "entregable": "Entregable eliminado"}
+                print(f"[OK] {mensajes[tipo]} correctamente.")
                 continue
             if opcion == 1:
                 cliente = seleccionar_objeto(sistema.clientes, "Clientes")
