@@ -297,7 +297,8 @@ def planificar_proyecto(sistema):
                     responsable = seleccionar_objeto(sistema.consultores, "Consultores")
 
             actividad = Actividad(
-                input("Código: "), input("Nombre: "), input("Etapa: "),
+                leer_codigo("Código: ", [a.codigo for a in proyecto.actividades], "A01"),
+                input("Nombre: "), input("Etapa: "),
                 leer_fecha("Fecha de inicio"), leer_fecha("Fecha de fin"),
                 leer_float("Peso en el avance total (% de 0 a 100): ", 0.01, 100), 0, "Pendiente", responsable
             )
@@ -313,7 +314,8 @@ def planificar_proyecto(sistema):
 
             obligatorio = leer_si_no("¿Es un entregable obligatorio?")
             entregable = Entregable(
-                input("Código: "), input("Nombre: "), leer_fecha("Fecha de entrega"),
+                leer_codigo("Código: ", [e.codigo for e in proyecto.entregables], "E01"),
+                input("Nombre: "), leer_fecha("Fecha de entrega"),
                 leer_float("Peso referencial (0 si no aplica): ", 0, 100), obligatorio,
                 "Pendiente", responsable
             )
@@ -322,7 +324,7 @@ def planificar_proyecto(sistema):
 
         elif opcion == "3":
             gasto = Gasto(
-                input("Código: "), input("Tipo: "),
+                leer_codigo("Código: ", [g.codigo for g in proyecto.gastos], "G01"), input("Tipo: "),
                 leer_float("Monto planificado: ", 0)
             )
             proyecto.agregar_gasto(gasto)
@@ -347,7 +349,8 @@ def asignar_consultor(sistema):
 
     print(f"Rol del consultor: {consultor.nivel_experiencia} (automático)")
     asignacion = Asignacion(
-        input("Código de asignación: "), proyecto, consultor,
+        leer_codigo("Código de asignación: ", [a.codigo for a in proyecto.asignaciones], "AS01"),
+        proyecto, consultor,
         leer_int("Mes (1-12): ", 1, 12), leer_int("Año (ej. 2026): ", 1900, 2200),
         leer_float("Horas planificadas (mayor a 0): ", 0.01), consultor.nivel_experiencia
     )
