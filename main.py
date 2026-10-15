@@ -78,6 +78,16 @@ def leer_int(mensaje, minimo=None, maximo=None):
         return numero
 
 
+def leer_codigo(mensaje, existentes, ejemplo=""):
+    """Pide un código obligatorio que no se repita."""
+    usados = [c.lower() for c in existentes]
+    while True:
+        codigo = leer_texto(mensaje, ejemplo)
+        if codigo.lower() not in usados:
+            return codigo
+        error_campo(f"El código {codigo} ya existe.", "Ingrese un código diferente.")
+
+
 def elegir(mensaje, opciones):
     print(f"\n{mensaje}")
     for i, opcion in enumerate(opciones, 1):
@@ -367,9 +377,22 @@ def registrar_ejecucion(sistema):
             if not esta_asignado:
                 raise DatoInvalidoError("El consultor no tiene asignación en este proyecto.")
 
+            codigos = [r.codigo for a in proyecto.actividades for r in a.registros_horas]
+            codigo = leer_codigo("Código del registro: ", codigos, "R01")
+            fecha = leer_fecha("Fecha")
+            # El consultor debe estar asignado en el mes de la fecha.
+            asignado_en_mes = any(
+                a.consultor is consultor and a.mes == fecha.month and a.anio == fecha.year
+                for a in proyecto.asignaciones
+            )
+            if not asignado_en_mes:
+                raise DatoInvalidoError(
+                    f"{consultor.nombre} no tiene asignación en {fecha.month:02d}/{fecha.year}. "
+                    "Asígnelo primero en el menú 4."
+                )
             registro = RegistroHoras(
-                input("Código del registro: "), actividad, consultor,
-                leer_fecha("Fecha"), leer_float("Cantidad de horas (mayor a 0): ", 0.01)
+                codigo, actividad, consultor, fecha,
+                leer_float("Cantidad de horas (mayor a 0): ", 0.01)
             )
             actividad.agregar_registro_horas(registro)
             print("Horas reales registradas.")
