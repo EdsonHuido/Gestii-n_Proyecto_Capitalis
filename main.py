@@ -72,8 +72,15 @@ def leer_int(mensaje, minimo=None, maximo=None):
         except ValueError:
             error_campo("Se necesita un número entero.", "Ejemplo: 1, 3 o 2026; no escriba letras ni decimales.")
             continue
-        if minimo is not None and numero < minimo or maximo is not None and numero > maximo:
-            error_campo("Número fuera del rango disponible.", f"Ingrese un valor entre {minimo} y {maximo}.")
+        if (minimo is not None and numero < minimo) or (maximo is not None and numero > maximo):
+            # Mensaje según los límites que existan.
+            if maximo is None:
+                solucion = f"Ingrese un valor mayor o igual a {minimo}."
+            elif minimo is None:
+                solucion = f"Ingrese un valor menor o igual a {maximo}."
+            else:
+                solucion = f"Ingrese un valor entre {minimo} y {maximo}."
+            error_campo("Número fuera del rango disponible.", solucion)
             continue
         return numero
 
