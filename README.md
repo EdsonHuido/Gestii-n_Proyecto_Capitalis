@@ -1,4 +1,4 @@
-# CAPITALIS FP2 — Versión con actualización de información
+# CAPITALIS FP2 
 
 ## Ejecución
 Abra esta carpeta en Visual Studio Code. Ejecute únicamente `main.py` (Python 3.10 o superior). No ejecute directamente los archivos de clases. No requiere instalar dependencias externas.
